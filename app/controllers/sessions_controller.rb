@@ -1,5 +1,5 @@
 class SessionsController < ApplicationController
-   before_action :is_logged_in
+   before_action :is_logged_in, only: [:new, :create]
 
   def new
   end
@@ -15,14 +15,18 @@ class SessionsController < ApplicationController
       render 'new'
     end
   end
+
   def destroy
     log_out if logged_in?
     redirect_to root_url
     flash[:success] = "Successfully logged out!"
   end
+
   private
   def is_logged_in
+    if current_user
     redirect_to root_url if current_user
     flash[:alert] = "You are already logged in"
-  end
+    end
+ end
 end
